@@ -1,0 +1,9 @@
+{
+  "registry-mirrors": ["{{ registry_host }}"],
+  "insecure-registries": ["{{ harbor_host }}"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}

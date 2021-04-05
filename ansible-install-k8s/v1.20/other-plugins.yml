@@ -1,0 +1,32 @@
+---
+# ansible-playbook -i hosts other-plugins.yml --tags nfs
+- name: 1.部署nfs
+  gather_facts: false
+  hosts: nfs
+  roles:
+    - nfs
+  tags: nfs
+
+# ansible-playbook -i hosts other-plugins.yml --tags docker
+- name: 2.部署Docker
+  gather_facts: false
+  hosts: docker-compose 
+  roles:
+    - docker 
+  tags: docker
+
+# ansible-playbook -i hosts other-plugins.yml --tags docker_daemon
+- name: 3.重置 Docker 的 daemon.json
+  gather_facts: false
+  hosts: docker-compose
+  roles:
+    - { role: docker, tags: ["docker_json", "docker_restart", "docker_info"] }
+  tags: docker_daemon
+
+# ansible-playbook -i hosts other-plugins.yml --tags docker-compose 
+- name: 4.安装 docker-compose
+  gather_facts: false
+  hosts: docker-compose
+  roles:
+    - docker-compose
+  tags: docker-compose 

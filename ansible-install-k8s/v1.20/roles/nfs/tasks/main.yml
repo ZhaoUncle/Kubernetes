@@ -1,0 +1,19 @@
+---
+- name: 创建临时目录
+  file: dest={{ nfs_dir }} state=directory
+
+- name: 安装 nfs-utils
+  yum: name=nfs-utils state=present
+
+- name: 配置 nfs 地址     
+  template: src=exports.j2 dest=/etc/exports
+  
+- name: 启动服务
+  systemd: name={{ item }} state=restarted enabled=yes daemon_reload=yes
+  with_items:
+    - nfs
+
+- name: 查看 nfs 挂载状态
+  shell: showmount -e
+  register: nfs_show
+- debug: var=nfs_show.stdout_lines
